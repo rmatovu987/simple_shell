@@ -14,5 +14,5 @@ After compilation, the resulting program can run stand-alone, either in interact
 
 
 ### Credits
-All code written by [Richard Matovu](https://github.com/rmatovu987) and [Stacey Nakanwagi]().
+All code written by [Richard Matovu](https://github.com/rmatovu987) and [Stacey Nakanwagi](https://github.com/stacey-bee).
 
