@@ -13,6 +13,6 @@ gcc -Wall -Werror -Wextra -pedantic *.c
 After compilation, the resulting program can run stand-alone, either in interactive or non-interactive mode.
 
 
-### Credits
+### Credits:
 All code written by [Richard Matovu](https://github.com/rmatovu987) and [Stacey Nakanwagi](https://github.com/stacey-bee).
 
