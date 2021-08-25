@@ -1,78 +1,101 @@
-.TH SHELL 1 "27 November 2019" GNU "Shell man page"
+.TH SIMPLE_SHELL 1 "28 March 2018" "1.0" "custom man page"
 .SH NAME
-.B hsh
-- Command line interpreter (shell)
+.B Simple Shell
+- command language interpreter
 .SH SYNOPSIS
-The shell is executed by typing ./hsh
-.br
-Then, it will wait for an input such as : command [arguments] [other]
+.B Simple Shell
 .SH DESCRIPTION
-This shell is a project dedicated to our studies. My partner and I, have tried to mimic the behavior of a real shell. In case you don't know what a shell is (I doubt that) here is a brief explanation. A shell is a command language interpreter that executes commands read from the standard input or from a file. Our shell does not support the arguments passed to it, yet. We are still working on it.
-.br
-.B What hsh can do :
-.br
-- Executes any command with its arguments
-.br
-- Executes built-in commands
-.br
-- Handle pipes
-.br
-- Handle the command seperator ;
-.br
-- Handle && and || logical operators
-.br
-- handle variable replacement
-.br
-- handle the $? variable
-.br
-- handle the $$ variable
-.SH BUILT-IN FUNCTIONS
-Those are the available built-in functions :
-.br
- - exit : exit the shell
-.br
- - cd : Change Directory
-.br
- - help : Display the help page
-.br
- - history : Display history of commands used
-.br
- - alias : Put an alias for a command
-.br
- - env : Display the environment variables
-.SH OPTIONS
-There are no options for the moment.
-.SH EXIT STATUS
-The exit value depends on how a function has terminated. Every error is identified by a certain value. On success it will always return 0.
-.SH RETURN VALUE
-Return 0 on success, otherwise it will return the exit value.
-.SH ENVIRONMENT
-- PATH
-.br
-- $?
-.br
-- $$
-.SH BUGS
-There is no known bugs at the moment.
+Simple shell is one version of a command language interpreter that executes commands read from the standard input. It's functionality is limited to certain shell builtin functions found in the environmental variable
+.I PATH.
+It does not yet handle piping, redirection, pattern matching, variable expansions, and more extra functions.
+.SS Invocation
+An
+.I interactive
+simple shell can be invoked by typing ./simple_shell. Meanwhile, a
+.I non-interactive
+simple shell can also be invoked via a pipe (e.g. echo "/bin/ls" | ./simple_shell).
+.SS Command Execution
+After a command has been split into words, if it results in a simple command and an optional list of arguments, the following actions are taken.
+.sp
+If the command name contains no slashes, the shell attempts to locate it. If there exists a shell function by that name that function is invoked. If the name does not match a function, the shell searches for it in the list of shell builtins. If a match is found, that builtin is invoked.
+.sp
+If the name is neither a shell function nor a builtin, and contains no slashes, the simple shell searches each element of the environmental variable PATH for a directory containing an executable file by that name. If the search is unsuccessful, the simple shell prints an error message "Error: File or description not found."
+.SS Sample Functions
+.sp
+echo
+.I [arguments]
+      prints to standard output the argument(s) given and prints a newline
+.sp
+ls
+.I [[flags]...[arguments]]
+      lists files in the current directory according to the flags given by user
+.sp
+pwd
+      prints working directories
+.sp
+whereis
+.I [command]
+      prints to standard output which directory the function or shell builtin can be found
+.SS Shell Builtin Commands
+.sp
+cd
+      changes directory and updates environmental variables OLDPWD and PWD
+.sp
+env
+      prints environmental variables
+.sp
+exit
+      exits out of simple shell and returns to user's original shell
+.sp
+setenv
+      creates non-existing or modifies existing environmental variable within shell session
+.sp
+unsetenv
+      removes existing environmental variable within shell session
 .SH EXAMPLE
-.B Two ways to execute our shell :
-.br
-.B The intercative mode :
-.br
- $ ./hsh
-.br
- #cisfun$ /bin/ls
-.br
- hsh main.c shell.c
-.br
- #cisfun$ exit
-.br
- $
-.br
-.B The non-interactive mode :
-.br
- $ echo "/bin/ls" | ./hsh
-.br
- hsh main.c shell.c
+To
+.I invoke
+simple shell:
+.sp
+.RS
+(your_terminal)$ ./simple_shell
+.RE
+.RS
+.I $
+.RE
+.sp
+Sample Usage:
+.sp
+.RS
+.I $
+echo "This is pretty cool!"
+.RE
+.RS
+.I This is pretty cool!
+.RE
+.RS
+.I $
+ls -l /tmp
+.RE
+.RS
+.I total 4
+.RE
+.RS
+.I drwx------ 2 vagrant vagrant 4096 Mar 19 20:22 ssh-xTKqci
+.RE
+.sp
+To leave simple shell and return to your terminal:
+.sp
+.RS
+.I $
+exit
+.RE
+.RS
+(your_terminal)$
+.RE
+.SH BUGS
+Bugs...
+.SH SEE ALSO
+.I bash(1), sh(1), ksh(1), csh(1)
 .SH AUTHORS
-Mariem Matri, Inès Chokri
+Kevin Yook and Melissa Ng

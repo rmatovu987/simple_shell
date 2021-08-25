@@ -1,157 +1,114 @@
-# Simple Shell Project
+## Simple Shell
+> In this project, we coded from scratch a simple Unix shell. A shell is an interactive
+> command-line interpreter. We created a shell that would utilize the command line
+> interface (CLI). It allows users to type in a defined set of
+> commands (e.g. "rm" to remove files, "cat" to combine word documents, etc) and have the
+> operating system run the appropriate function. It is slightly different from a graphical user
+> interface (GUI). For instance, instead of using a mouse to click to open folders and delete files, a user
+> can type in a command (i.e. "ls" or "rm") and have the files be displayed or
+> modified in a list on the command line. GUI and CLI both have the same purpose to interact
+> with the operating system but their input methods are different and some developers
+> prefer the CLI to interact with the shell because their typing is quicker than
+> clicking and dragging. There are a few
+> versions of Unix shells, from the very first (Ken Thompson's) shell that can
+> be activated by typing ```sh``` in the terminal to today's most popular Bash
+> (Bourne Again Shell). Later versions of the shell handle memory leaks better and
+> have more functionality. Our shell is a simple version that handles memory leaks
+> very well and has basic functionality. You can create/write/read/open/remove
+> folders, print things to the terminal, change directories, print where you are
+> in the system, etc.
 
-**A simple Unix command line interpreter**
-![shell](/shell.png)
+### Synopsis
+> This repository holds all the code necessary for our custom simple shell to run.
+> Our shell currently handles the executions of executables found in the
+> environmental variable PATH, with or without their full paths. Sample commands
+> that our shell supports include ```ls``` (```/bin/ls```), ```pwd```, ```echo```,
+> ```which```, ```whereis```, etc. We've also created the following builtins.
 
-****
-## Table of contents
- - **What is the shell?**
- - **About this project**
- - **Essential Functionalities of the Simple Shell**
- - **File description**
- - **List of allowed functions and system calls for this project**
- - **USAGE**
- - **Example of Usage**
- - **Bugs**
- - **Credits**
- ****
+### Builtins
+* ```exit``` exits shell (```Usage: exit [status]```)
+* ```env``` prints environmental variables (Usage: ```env```)
+* ```setenv``` creates or modifies an environmental variable (Usage: ```setenv name value```)
+* ```unsetenv``` removes an envrionmental variable (Usage: ```unsetenv name value```)
+* ```cd``` changes directories (Usage: ```cd [-][~][path]```)
 
-## What is the shell?
-The shell is a program that takes commands from the keyboard via the terminal, and gives them to the operating system to perform.\
-**To better understand how the shell actually works, you can read our [Article].**
+### Functions and system calls used
+```read```, ```signal```, ```malloc```, ```free```, ```getcwd```, ```chdir```, ```access```, ```execve```, ```wait```, ```write```,  ```exit```
 
-## About this project
-This project is a simple version of the linux shell made for [Holberton School] taking part of the "Low-level programming & Algorithm - Linux and Unix system programming" projects.\
-It is created using the **C programming Language** and it can do many functionalities that a real shell does.
+### Description of what each file shows:
+```
+man_3_shell ------------------------ custom manpage for our simple shell
+main.c ----------------------------- holds entrance into program
+shell.h ---------------------------- holds prototypes of functions spread across all files
+```
+Helper files
+```
+prompt.c --------------------------- handles outline of shell's reprompting and executing
+non_interactive.c ------------------ handles output when shell is called outside of shell
+_realloc.c ------------------------- helper function handles reallocation
+_strcat.c -------------------------- concatenates two strings
+_strcmp.c -------------------------- compares if two strings match
+_strcpy.c -------------------------- copies a string
+_strdup.c -------------------------- duplicates a string
+_str_tok.c -------------------------- (custom) tokenizes user's command input and returns array
+c_str_tok.c ------------------------- tokenizes PATH to include ":" as Null, checks current dir
+get_line.c ------------------------- (custom) reads user's typed input into buffer
+_which.c --------------------------- appends command to PATHs, fleshes paths out, returns match
+_cd.c ------------------------------ changes directories
+linked_lists.c --------------------- adds and deletes nodes; prints and frees linked list
+get_env.c -------------------------- finds and returns copy of environmental variable
+env_linked_list.c ------------------ prints and creates linked list of envrionmental variables
+set_unset_env.c -------------------- finds environment variable index node, sets and unsets
+free_double_ptr -------------------- frees double pointers (user's command, arrays)
+_execve.c -------------------------- executes and frees command, then exits program
+__exit.c --------------------------- handles if user types exit or exit(value)
+int_to_string.c -------------------- converts int to string to write error messages
+print_error.c ---------------------- prints special error messages for certain fails
+```
+### Environment
+* Language: C
+* OS: Ubuntu 14.04 LTS
+* Compiler: gcc 4.8.4
+* Style guidelines: [Betty style](https://github.com/holbertonschool/Betty/wiki)
 
-## Essential Functionalities of the Simple Shell:
-> Displays a prompt "#cisfun$ " and waits for user input.\
-> Runs all commands of type "executable program" (ls and /bin/ls).\
-> Runs the following build_in commands: **exit**, **env**, **setenv** and **unsetenv**.\
-> Handles commands with arguments.\
-> Handles the PATH global variable.\
-> Handles The EOF (End Of File) condition.\
-> Handles the Ctrl + C signal -> It doesn't exit the shell
+## How To Install, Compile, and Use
+Install and Compile
+```
+(your_terminal)$ git clone https://github.com/MelissaN/simple_shell.git
+(your_terminal)$ cd simple_shell
+(your_terminal)$ gcc -Wall -Werror -Wextra -pedantic -Wno-format *.c -o simple_shell
+```
+**Non-Interactive Mode**
+```
+echo "ls -l" | ./simple_shell
+```
+**Interactive Mode***
+Activate the shell
+```
+(your_terminal)$ ./simple_shell
+$
+```
+Sample Usage
+```
+$ ls -al
+total 4
+-rw-rw-r-- 1 vagrant vagrant   234 Mar 28 19:32 file1.c
+-rw-rw-r-- 1 vagrant vagrant    69 Mar 28 19:32 file2.c
+$ echo "This is a pretty cool!"
+This is pretty cool!
+$ man ./man_1_simple_shell (opens our manpage for more information)
+```
+Stop and return to your original shell
+```
+$ exit
+(your_terminal)$
+```
 
-## Files description
- - **AUTHORS** -> List of contributors to this repository
- - **man_1_simple_shell** -> Manual page for the simple_shell
- - **shell.h** -> Header file
- - **shell.c** -> main function
-	- **sig_handler** -> handles the Ctrl + C signal
-	- **_EOF** -> handles the End Of File condition
- - **string.c**
-	- **_putchar** -> prints a character
-	- **_puts** -> prints a string
-	- **_strlen** -> gives the length of a string
-	- **_strdup** -> copies a string in a newly allocated memory
-	- **concat_all** -> concatenates 3 strings in a newly allocated memory
- - **line_exec.c**
-	- **splitstring** -> splits a string into an array of words
-	- **execute** -> executes a command using execve
-	- **realloc** -> reallocates a memory block
-	- **freearv** -> frees a 2 dimensional array
- - **linkpath.c**
-	- **_getenv** -> returns the value of a global variable
-	- **add_node_end** -> adds a node in a singly linked list
-	- **linkpath** -> creates a singly linked list for PATH directories
-	- **_which** -> finds the pathname of a command
-	- **free_list** -> frees the linked list of PATH value
- - **checkbuild.c**
-	- **checkbuild** -> checks if a command is a build-in command
- - **buildin.c**
-	- **exitt** -> handles the exit buildin command
-	- **_atoi** -> converts a string into an integer
-	- **env** -> prints the current environment
-	- **_setenv** -> Initialize a new global variable, or modify an existing one
-	- **_unsetenv** -> remove a global variable
 
-****
-## List of allowed functions and system calls for this project
- - access (man 2 access)
- - chdir (man 2 chdir)
- - close (man 2 close)
- - closedir (man 3 closedir)
- - execve (man 2 execve)
- - exit (man 3 exit)
- - _exit (man 2 _exit)
- - fflush (man 3 fflush)
- - fork (man 2 fork)
- - free (man 3 free)
- - getcwd (man 3 getcwd)
- - getline (man 3 getline)
- - isatty (man 3 isatty)
- - kill (man 2 kill)
- - malloc (man 3 malloc)
- - open (man 2 open)
- - opendir (man 3 opendir)
- - perror (man 3 perror)
- - read (man 2 read)
- - readdir (man 3 readdir)
- - signal (man 2 signal)
- - stat (__xstat) (man 2 stat)
- - lstat (__lxstat) (man 2 lstat)
- - fstat (__fxstat) (man 2 fstat)
- - strtok (man 3 strtok)
- - wait (man 2 wait)
- - waitpid (man 2 waitpid)
- - wait3 (man 2 wait3)
- - wait4 (man 2 wait4)
- - write (man 2 write)
-****
+### To Do
+* More functionality can still be added (e.g. handle aliases, pipelines, and redirections)
 
-## USAGE
-You can try our shell by following these steps:
-> **Step 1:** Clone our repository using this command, (you need to have git installed on your machine first)
-````
-git clone https://github.com/MatriMariem/simple_shell
-````
-> **Step 2:** Change directory to simple_shell:
-````
-cd simple_shell
-````
-> **Step 3:** Compile the C files in this way:
-````
-gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
-````
-> **Step 4:** Run the shell
-````
-./hsh
-````
-**Exiting the shell**
-When you want to exit the shell, you can use one of the following methods:
-> **1: Type the command "exit"**
-````
-exit
-````
-> **2: Press on Ctrl + D**
-
-## Example of Usage
-````
-ubunto@ubuntu:~/Bureau/simple_shell$ gcc -Wall -Wextra -Werror -pedantic *.c -o hsh
-ubunto@ubuntu:~/Bureau/simple_shell$ ./hsh
-#cisfun$ echo Hello, This is an example
-Hello, This is an example
-#cisfun$ ls
-README.md  checkbuild.c  line_exec.c  shell.c  string.c
-buildin.c  hsh		 linkpath.c   shell.h
-#cisfun$ ^C
-#cisfun$ ls -l
-total 52
--rw-r--r-- 1 ubunto ubunto  3067 Nov 26 04:22 README.md
--rw-r--r-- 1 ubunto ubunto  2183 Nov 24 16:17 buildin.c
--rw-r--r-- 1 ubunto ubunto   574 Nov 24 15:59 checkbuild.c
--rwxr-xr-x 1 ubunto ubunto 18144 Nov 26 04:22 hsh
--rw-r--r-- 1 ubunto ubunto  2091 Nov 24 14:49 line_exec.c
--rw-r--r-- 1 ubunto ubunto  1926 Nov 24 14:30 linkpath.c
--rw-r--r-- 1 ubunto ubunto   951 Nov 24 16:09 shell.c
--rw-r--r-- 1 ubunto ubunto  1351 Nov 24 15:58 shell.h
--rw-r--r-- 1 ubunto ubunto  1727 Nov 24 14:30 string.c
-#cisfun$ exit
-ubunto@ubuntu:~/Bureau/simple_shell$
-````
-## Bugs
-No known Bugs.
+---
 
 ## Credits
 All code written by [Richard Matovu](https://github.com/rmatovu987) and [Stacey Nakanwagi](https://github.com/stacey-bee).
