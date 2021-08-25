@@ -1,123 +1,157 @@
-# :turtle::turtle::shell: Simple Shell :shell::turtle::turtle:
-- - -
-### Description
-A simple UNIX command interpreter that replicates functionalities of the simple shell (sh). Additional functions are also included. This program was written entirely in C.
+# Simple Shell Project
 
-### Installation
-Clone this repository into local working directory. For best results, files should be compiled with 
-```sh
-gcc -Wall -Werror -Wextra -pedantic *.c
-```
+**A simple Unix command line interpreter**
+![shell](/shell.png)
 
-### Usage
-After compilation, the resulting program can run stand-alone, either in interactive or non-interactive mode.
+****
+## Table of contents
+ - **What is the shell?**
+ - **About this project**
+ - **Essential Functionalities of the Simple Shell**
+ - **File description**
+ - **List of allowed functions and system calls for this project**
+ - **USAGE**
+ - **Example of Usage**
+ - **Bugs**
+ - **TEAM**
+ ****
 
-#### Interactive Mode
-In interactive mode, simply run the program and wait for the prompt to appear. From there, type commands freely, exiting with either the "exit" command or ctrl-D.
+## What is the shell?
+The shell is a program that takes commands from the keyboard via the terminal, and gives them to the operating system to perform.\
+**To better understand how the shell actually works, you can read our [Article].**
 
-#### Non-Interactive Mode
-In non-interactive mode, echo desired command and pipe it into the program as following:
-```sh
-echo "ls" | ./shell
-```
-In non-interactive mode, the program will exit after finishing desired command(s).
+## About this project
+This project is a simple version of the linux shell made for [Holberton School] taking part of the "Low-level programming & Algorithm - Linux and Unix system programming" projects.\
+It is created using the **C programming Language** and it can do many functionalities that a real shell does.
 
-#### Included Built-Ins
-The shell has support for the following built-in commands:
+## Essential Functionalities of the Simple Shell:
+> Displays a prompt "#cisfun$ " and waits for user input.\
+> Runs all commands of type "executable program" (ls and /bin/ls).\
+> Runs the following build_in commands: **exit**, **env**, **setenv** and **unsetenv**.\
+> Handles commands with arguments.\
+> Handles the PATH global variable.\
+> Handles The EOF (End Of File) condition.\
+> Handles the Ctrl + C signal -> It doesn't exit the shell
 
-Command | Definition
---------|---------------
-exit [n] | Exit the shell, with an optional exit status, n.
-env      | Print the environment.
-setenv [var] [value] | Set an environment variable and value. If the variable exists, the value will be updated.
-unsetenv [var] | Remove an environment variable.
-cd [dir] | Change the directory.
+## Files description
+ - **AUTHORS** -> List of contributors to this repository
+ - **man_1_simple_shell** -> Manual page for the simple_shell
+ - **shell.h** -> Header file
+ - **shell.c** -> main function
+	- **sig_handler** -> handles the Ctrl + C signal
+	- **_EOF** -> handles the End Of File condition
+ - **string.c**
+	- **_putchar** -> prints a character
+	- **_puts** -> prints a string
+	- **_strlen** -> gives the length of a string
+	- **_strdup** -> copies a string in a newly allocated memory
+	- **concat_all** -> concatenates 3 strings in a newly allocated memory
+ - **line_exec.c**
+	- **splitstring** -> splits a string into an array of words
+	- **execute** -> executes a command using execve
+	- **realloc** -> reallocates a memory block
+	- **freearv** -> frees a 2 dimensional array
+ - **linkpath.c**
+	- **_getenv** -> returns the value of a global variable
+	- **add_node_end** -> adds a node in a singly linked list
+	- **linkpath** -> creates a singly linked list for PATH directories
+	- **_which** -> finds the pathname of a command
+	- **free_list** -> frees the linked list of PATH value
+ - **checkbuild.c**
+	- **checkbuild** -> checks if a command is a build-in command
+ - **buildin.c**
+	- **exitt** -> handles the exit buildin command
+	- **_atoi** -> converts a string into an integer
+	- **env** -> prints the current environment
+	- **_setenv** -> Initialize a new global variable, or modify an existing one
+	- **_unsetenv** -> remove a global variable
 
-The following built-in commands may be supported in future versions:
+****
+## List of allowed functions and system calls for this project
+ - access (man 2 access)
+ - chdir (man 2 chdir)
+ - close (man 2 close)
+ - closedir (man 3 closedir)
+ - execve (man 2 execve)
+ - exit (man 3 exit)
+ - _exit (man 2 _exit)
+ - fflush (man 3 fflush)
+ - fork (man 2 fork)
+ - free (man 3 free)
+ - getcwd (man 3 getcwd)
+ - getline (man 3 getline)
+ - isatty (man 3 isatty)
+ - kill (man 2 kill)
+ - malloc (man 3 malloc)
+ - open (man 2 open)
+ - opendir (man 3 opendir)
+ - perror (man 3 perror)
+ - read (man 2 read)
+ - readdir (man 3 readdir)
+ - signal (man 2 signal)
+ - stat (__xstat) (man 2 stat)
+ - lstat (__lxstat) (man 2 lstat)
+ - fstat (__fxstat) (man 2 fstat)
+ - strtok (man 3 strtok)
+ - wait (man 2 wait)
+ - waitpid (man 2 waitpid)
+ - wait3 (man 2 wait3)
+ - wait4 (man 2 wait4)
+ - write (man 2 write)
+****
 
-Command | Definition
---------|---------------
-alias   | Set an Alias.
-history | View the history of the shell.
+## USAGE
+You can try our shell by following these steps:
+> **Step 1:** Clone our repository using this command, (you need to have git installed on your machine first)
+````
+git clone https://github.com/MatriMariem/simple_shell
+````
+> **Step 2:** Change directory to simple_shell:
+````
+cd simple_shell
+````
+> **Step 3:** Compile the C files in this way:
+````
+gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+````
+> **Step 4:** Run the shell
+````
+./hsh
+````
+**Exiting the shell**
+When you want to exit the shell, you can use one of the following methods:
+> **1: Type the command "exit"**
+````
+exit
+````
+> **2: Press on Ctrl + D**
 
+## Example of Usage
+````
+ubunto@ubuntu:~/Bureau/simple_shell$ gcc -Wall -Wextra -Werror -pedantic *.c -o hsh
+ubunto@ubuntu:~/Bureau/simple_shell$ ./hsh
+#cisfun$ echo Hello, This is an example
+Hello, This is an example
+#cisfun$ ls
+README.md  checkbuild.c  line_exec.c  shell.c  string.c
+buildin.c  hsh		 linkpath.c   shell.h
+#cisfun$ ^C
+#cisfun$ ls -l
+total 52
+-rw-r--r-- 1 ubunto ubunto  3067 Nov 26 04:22 README.md
+-rw-r--r-- 1 ubunto ubunto  2183 Nov 24 16:17 buildin.c
+-rw-r--r-- 1 ubunto ubunto   574 Nov 24 15:59 checkbuild.c
+-rwxr-xr-x 1 ubunto ubunto 18144 Nov 26 04:22 hsh
+-rw-r--r-- 1 ubunto ubunto  2091 Nov 24 14:49 line_exec.c
+-rw-r--r-- 1 ubunto ubunto  1926 Nov 24 14:30 linkpath.c
+-rw-r--r-- 1 ubunto ubunto   951 Nov 24 16:09 shell.c
+-rw-r--r-- 1 ubunto ubunto  1351 Nov 24 15:58 shell.h
+-rw-r--r-- 1 ubunto ubunto  1727 Nov 24 14:30 string.c
+#cisfun$ exit
+ubunto@ubuntu:~/Bureau/simple_shell$
+````
+## Bugs
+No known Bugs.
 
-#### Outside Programs
-Simple shell can run outside programs by typing the absolute paths (/bin/ls) or the executable name (ls), If directory is included in the PATH.
-
-### Examples
-
-```sh
-divalicious$ ls -l
-total 76
--rw-rw-r-- 1 vagrant vagrant  2492 Aug 28 02:27 #README.md#
--rw-rw-r-- 1 vagrant vagrant     7 Aug 27 20:51 README.md
--rw-rw-r-- 1 vagrant vagrant  1232 Aug 27 20:39 addnode.c
--rw-rw-r-- 1 vagrant vagrant  1995 Aug 27 20:51 builtin.c
--rw-rw-r-- 1 vagrant vagrant  1004 Aug 27 20:51 builtin2.c
--rw-rw-r-- 1 vagrant vagrant   319 Aug 27 20:39 freelist.c
--rw-rw-r-- 1 vagrant vagrant   800 Aug 27 20:39 getenv.c
--rw-rw-r-- 1 vagrant vagrant  1670 Aug 27 20:39 header.h
--rwxrwxr-x 1 vagrant vagrant 19257 Aug 28 02:28 hsh
--rw-rw-r-- 1 vagrant vagrant   765 Aug 27 20:51 isa.c
--rw-rw-r-- 1 vagrant vagrant   923 Aug 27 20:51 path.c
--rw-rw-r-- 1 vagrant vagrant   262 Aug 27 20:39 printlist.c
--rw-rw-r-- 1 vagrant vagrant  1930 Aug 27 20:51 shell.c
--rw-rw-r-- 1 vagrant vagrant  1310 Aug 27 20:39 strings.c
--rw-rw-r-- 1 vagrant vagrant   670 Aug 27 20:51 strtok.c
-```
-```sh
-divalicious$ /bin/pwd
-/home/vagrant/simple_shell
-```
-```sh
-divalicious$ hello world
-./hsh: 1: hello: not found
-```
-```sh
-env: env
-XDG_SESSION_ID=3
-TERM=xterm-256color
-SHELL=/bin/bash
-SSH_CLIENT=10.0.2.2 56306 22
-SSH_TTY=/dev/pts/0
-USER=vagrant
-LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:
-MAIL=/var/mail/vagrant
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games
-PWD=/home/vagrant/simple_shell
-LANG=en_US.UTF-8
-SHLVL=1
-HOME=/home/vagrant
-LOGNAME=vagrant
-SSH_CONNECTION=10.0.2.2 56306 10.0.2.15 22
-LESSOPEN=| /usr/bin/lesspipe %s
-XDG_RUNTIME_DIR=/run/user/1000
-LESSCLOSE=/usr/bin/lesspipe %s %s
-OLDPWD=/home/vagrant
-_=./hsh
-```
-### Included Files
-
- - _getenv.c - gets the environmental character.
- - _putchar.c - writes the output to the prompt.
- - _which.c - determines which character pointers is going through the struct.
- - adddnode.c - Add a node at the front of a linked list.
- - addnode2.c - Second interation of add functions that need to be used.
- - builtin.c - takes the string arguments and checks them with the env.
- - builtin2.c - second interation of function needed for the builtin functions.
- - freelist.c - frees the list.
- - header.h - handles libraries and prototype.
- - hsh - This will be the compiled file once ran through GCC.
- - int_getn.c - compares the strings in the environment.
- - is_a.c -checks if its a character.
- - path.c - pathchecker and helps with path token.
- - printlist.c - prints the list array.
- - shell.c - function for running the basis shell logic.
- - sighandler.c - hands the signal for inside the main function.
- - strings.c - string implementation multiple functions.
- - strings2.c - second interation of string functions that are in use.
- - strok.c - seperate and create tokens from the string.
-
-### Credits
+## Credits
 All code written by [Richard Matovu](https://github.com/rmatovu987) and [Stacey Nakanwagi](https://github.com/stacey-bee).
-
