@@ -13,7 +13,7 @@
  - **USAGE**
  - **Example of Usage**
  - **Bugs**
- - **TEAM**
+ - **Credits**
  ****
 
 ## What is the shell?
