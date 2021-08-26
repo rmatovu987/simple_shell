@@ -11,8 +11,7 @@ void print_alias(alias_t *alias);
  * @args: An array of arguments.
  * @front: A double pointer to the beginning of args.
  *
- * Return: If an error occurs - -1.
- *         Otherwise - 0.
+ * Return: If an error occurs - -1. Otherwise - 0.
  */
 int shellby_alias(char **args, char __attribute__((__unused__)) **front)
 {
