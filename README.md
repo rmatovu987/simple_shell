@@ -1,87 +1,114 @@
-# 0x16. C - SIMPLE SHELL
+## Simple Shell
+> In this project, we coded from scratch a simple Unix shell. A shell is an interactive
+> command-line interpreter. We created a shell that would utilize the command line
+> interface (CLI). It allows users to type in a defined set of
+> commands (e.g. "rm" to remove files, "cat" to combine word documents, etc) and have the
+> operating system run the appropriate function. It is slightly different from a graphical user
+> interface (GUI). For instance, instead of using a mouse to click to open folders and delete files, a user
+> can type in a command (i.e. "ls" or "rm") and have the files be displayed or
+> modified in a list on the command line. GUI and CLI both have the same purpose to interact
+> with the operating system but their input methods are different and some developers
+> prefer the CLI to interact with the shell because their typing is quicker than
+> clicking and dragging. There are a few
+> versions of Unix shells, from the very first (Ken Thompson's) shell that can
+> be activated by typing ```sh``` in the terminal to today's most popular Bash
+> (Bourne Again Shell). Later versions of the shell handle memory leaks better and
+> have more functionality. Our shell is a simple version that handles memory leaks
+> very well and has basic functionality. You can create/write/read/open/remove
+> folders, print things to the terminal, change directories, print where you are
+> in the system, etc.
 
-<p align="center">
-<img src="https://mcdn.wallpapersafari.com/medium/5/36/lmD5tM.jpg">
-</p>
+### Synopsis
+> This repository holds all the code necessary for our custom simple shell to run.
+> Our shell currently handles the executions of executables found in the
+> environmental variable PATH, with or without their full paths. Sample commands
+> that our shell supports include ```ls``` (```/bin/ls```), ```pwd```, ```echo```,
+> ```which```, ```whereis```, etc. We've also created the following builtins.
 
-## Description
+### Builtins
+* ```exit``` exits shell (```Usage: exit [status]```)
+* ```env``` prints environmental variables (Usage: ```env```)
+* ```setenv``` creates or modifies an environmental variable (Usage: ```setenv name value```)
+* ```unsetenv``` removes an envrionmental variable (Usage: ```unsetenv name value```)
+* ```cd``` changes directories (Usage: ```cd [-][~][path]```)
 
-`Simple_shell` is an sh-compatible command language interpreter that executes commands read from the standard input or from a file.
+### Functions and system calls used
+```read```, ```signal```, ```malloc```, ```free```, ```getcwd```, ```chdir```, ```access```, ```execve```, ```wait```, ```write```,  ```exit```
 
+### Description of what each file shows:
+```
+man_3_shell ------------------------ custom manpage for our simple shell
+main.c ----------------------------- holds entrance into program
+shell.h ---------------------------- holds prototypes of functions spread across all files
+```
+Helper files
+```
+prompt.c --------------------------- handles outline of shell's reprompting and executing
+non_interactive.c ------------------ handles output when shell is called outside of shell
+_realloc.c ------------------------- helper function handles reallocation
+_strcat.c -------------------------- concatenates two strings
+_strcmp.c -------------------------- compares if two strings match
+_strcpy.c -------------------------- copies a string
+_strdup.c -------------------------- duplicates a string
+_str_tok.c -------------------------- (custom) tokenizes user's command input and returns array
+c_str_tok.c ------------------------- tokenizes PATH to include ":" as Null, checks current dir
+get_line.c ------------------------- (custom) reads user's typed input into buffer
+_which.c --------------------------- appends command to PATHs, fleshes paths out, returns match
+_cd.c ------------------------------ changes directories
+linked_lists.c --------------------- adds and deletes nodes; prints and frees linked list
+get_env.c -------------------------- finds and returns copy of environmental variable
+env_linked_list.c ------------------ prints and creates linked list of envrionmental variables
+set_unset_env.c -------------------- finds environment variable index node, sets and unsets
+free_double_ptr -------------------- frees double pointers (user's command, arrays)
+_execve.c -------------------------- executes and frees command, then exits program
+__exit.c --------------------------- handles if user types exit or exit(value)
+int_to_string.c -------------------- converts int to string to write error messages
+print_error.c ---------------------- prints special error messages for certain fails
+```
+### Environment
+* Language: C
+* OS: Ubuntu 14.04 LTS
+* Compiler: gcc 4.8.4
+* Style guidelines: [Betty style](https://github.com/holbertonschool/Betty/wiki)
 
-The `simple_shell` is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands. The `simple_shell` implements a language that has flow control constructs, a macro facility that provides a variety of features in addition to data storage, along with built in history and lineediting capabilities. It incorporates many features to aid interactive use and has the advantage that the interpretative language is common to both interactive and non-interactive use`(shell scripts)`. That is, commands canbe typed directly to the running shell or can be put into a file and the file can be executed directly by the shell.
-
-
-## Syntax
-
-The shell works by using commands given by the user input. The shell commands take in the following syntax:
-
-`#cisfun$ <command> <flags or options> <argument 1> <argument 2> ...`
-
-## Features
-
-- Displays a prompt and waits for user to type a command
-- Can handle commands with options and arguments
-- Prompt displays again each time command is executed
-- Uses PATH variable to find executable command
-- If executable is not found, prints an error message and displays prompt again
-- Includes an exit function that exits the shell
-- Includes an env built-in that prints the current environment
-
-
-## Usage
-
-- Enter custom shell by typing `"./hsh"`. You should be prompted with a `#cisfun$`
-- Type a command of your liking and press `"Enter"`
-- Appropriate output will appear
-- Prompt reappears and awaits your next command
-- Exit shell by typing `"exit"` o `"ctrl D"`
-
-
-## Environment
-
-The custom shell was developed and tested on `Ubuntu 14.04` LTS via Vagrant in VirtualBox.
-
-
-## Compilation
-
-All files will be compiled with the following: 
-```bash
-gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
+## How To Install, Compile, and Use
+Install and Compile
+```
+(your_terminal)$ git clone https://github.com/MelissaN/simple_shell.git
+(your_terminal)$ cd simple_shell
+(your_terminal)$ gcc -Wall -Werror -Wextra -pedantic -Wno-format *.c -o simple_shell
+```
+**Non-Interactive Mode**
+```
+echo "ls -l" | ./simple_shell
+```
+**Interactive Mode***
+Activate the shell
+```
+(your_terminal)$ ./simple_shell
+$
+```
+Sample Usage
+```
+$ ls -al
+total 4
+-rw-rw-r-- 1 vagrant vagrant   234 Mar 28 19:32 file1.c
+-rw-rw-r-- 1 vagrant vagrant    69 Mar 28 19:32 file2.c
+$ echo "This is a pretty cool!"
+This is pretty cool!
+$ man ./man_1_simple_shell (opens our manpage for more information)
+```
+Stop and return to your original shell
+```
+$ exit
+(your_terminal)$
 ```
 
-## Exiting commands and the shell
 
-To exit out of a command or process the user can use `ctrl c`. `Control c` stops a process and causes it to abort. The user can also utilize the command `ctrl D` which will just exit. When the command `ctrl D` is used an exit status of 0 is given. Using `exit`, you can input its exit status or it is defaulted to thestatus of the last command executed.
+### To Do
+* More functionality can still be added (e.g. handle aliases, pipelines, and redirections)
 
+---
 
-<<<<<<< HEAD
-## Example
-
-Interactive Mode
-
-```bash
- $ ./hsh
-($) /bin/ls
-hsh main.c shell.c
-($)
-($) exit
- $
-```
-Non-interactive Mode
-
-```bash
-$ echo "/bin/ls" | ./hsh
-hsh main.c shell.c test_ls_2
-$
-$ cat test_ls_2
-/bin/ls
-/bin/ls
-$
-$ cat test_ls_2 | ./hsh
-hsh main.c shell.c test_ls_2
-hsh main.c shell.c test_ls_2
-$
-```
-### Credits
+## Credits
 All code written by [Richard Matovu](https://github.com/rmatovu987) and [Stacey Nakanwagi](https://github.com/stacey-bee).

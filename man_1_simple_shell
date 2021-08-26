@@ -1,84 +1,101 @@
-.TH man simple_shell "17 April 2020" "1.0" "Simple Shell man page"
+.TH SIMPLE_SHELL 1 "28 March 2018" "1.0" "custom man page"
 .SH NAME
-.B shell - command interpreter
-
+.B Simple Shell
+- command language interpreter
 .SH SYNOPSIS
-.B ./hsh
-
-.SS Syntax
-The shell works by using commands given by the user input. The shell commands take in the following syntax:
-
-.B #cisfun$
-.I <command> <flags or options> <argument 1> <argument 2> ...
-
+.B Simple Shell
 .SH DESCRIPTION
-
-This is a simple UNIX command interpreter. Simple_shell is an sh-compatible command language interpreter that executes commands read from the standard input or from a file.
-
-.SS Overview
-A Unix shell is a command-line interpreter or shell that provides a command line user interface for Unix-like operating systems. The shell is both an interactive command language and a scripting language, and is used by the operating system to control the execution of the system using shell scripts.
-
-.SS Path search
-When type a command, the shell first looks to see if it has a builtin command with that name. If exist a coincidence in the PATH of the environment variable (env) with that name. Then append the command from the prompt to the PATH directory and return the entire path. If don't exist coincidence an error is displayed.
-
-.SH COMPILATION
-All files will be compiled with gcc flags
-
-gcc -Wall -Werror -Wextra -pedantic *.c -o hsh
-
-.SH RETURN VALUE
-will return zero (0), unless specified by an exit code.
-
+Simple shell is one version of a command language interpreter that executes commands read from the standard input. It's functionality is limited to certain shell builtin functions found in the environmental variable
+.I PATH.
+It does not yet handle piping, redirection, pattern matching, variable expansions, and more extra functions.
+.SS Invocation
+An
+.I interactive
+simple shell can be invoked by typing ./simple_shell. Meanwhile, a
+.I non-interactive
+simple shell can also be invoked via a pipe (e.g. echo "/bin/ls" | ./simple_shell).
+.SS Command Execution
+After a command has been split into words, if it results in a simple command and an optional list of arguments, the following actions are taken.
+.sp
+If the command name contains no slashes, the shell attempts to locate it. If there exists a shell function by that name that function is invoked. If the name does not match a function, the shell searches for it in the list of shell builtins. If a match is found, that builtin is invoked.
+.sp
+If the name is neither a shell function nor a builtin, and contains no slashes, the simple shell searches each element of the environmental variable PATH for a directory containing an executable file by that name. If the search is unsuccessful, the simple shell prints an error message "Error: File or description not found."
+.SS Sample Functions
+.sp
+echo
+.I [arguments]
+      prints to standard output the argument(s) given and prints a newline
+.sp
+ls
+.I [[flags]...[arguments]]
+      lists files in the current directory according to the flags given by user
+.sp
+pwd
+      prints working directories
+.sp
+whereis
+.I [command]
+      prints to standard output which directory the function or shell builtin can be found
+.SS Shell Builtin Commands
+.sp
+cd
+      changes directory and updates environmental variables OLDPWD and PWD
+.sp
+env
+      prints environmental variables
+.sp
+exit
+      exits out of simple shell and returns to user's original shell
+.sp
+setenv
+      creates non-existing or modifies existing environmental variable within shell session
+.sp
+unsetenv
+      removes existing environmental variable within shell session
 .SH EXAMPLE
-Here are a couple examples of how you can use the shell
-
-=========================================
-.SS Interactive Mode
-
-
-  $ ./hsh
- ($) /bin/ls
- hsh main.c shell.c
- ($)
- ($) exit
-  $
-=========================================
-
-.SS Non-interactive Mode
-
-
-  $ echo "/bin/ls" | ./hsh
-  hsh main.c shell.c test_ls_2
-  $
-  $ cat test_ls_2
-  /bin/ls
-  /bin/ls
-  $
-  $ cat test_ls_2 | ./hsh
-  hsh main.c shell.c test_ls_2
-  hsh main.c shell.c test_ls_2
-  $
-=========================================
-
-.SH NOTES
-- This project is based on the Unix shell for Holberton School
-
-.SH SEE ALSO
-.B SH(1)
-
+To
+.I invoke
+simple shell:
+.sp
+.RS
+(your_terminal)$ ./simple_shell
+.RE
+.RS
+.I $
+.RE
+.sp
+Sample Usage:
+.sp
+.RS
+.I $
+echo "This is pretty cool!"
+.RE
+.RS
+.I This is pretty cool!
+.RE
+.RS
+.I $
+ls -l /tmp
+.RE
+.RS
+.I total 4
+.RE
+.RS
+.I drwx------ 2 vagrant vagrant 4096 Mar 19 20:22 ssh-xTKqci
+.RE
+.sp
+To leave simple shell and return to your terminal:
+.sp
+.RS
+.I $
+exit
+.RE
+.RS
+(your_terminal)$
+.RE
 .SH BUGS
-No know bugs
-
+Bugs...
+.SH SEE ALSO
+.I bash(1), sh(1), ksh(1), csh(1)
 .SH AUTHORS
-
-Mónica Ortíz Alvarez
-    1658@holbertonschool.com
-    https://github.com/monijoa
-
-
-Abdel Mejia
-    1659@holbertonschool.com
-    https://github.com/Bhalut
-
-
-Students from Holberton School
+Kevin Yook and Melissa Ng
